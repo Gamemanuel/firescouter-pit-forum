@@ -1,6 +1,5 @@
-import ThemeToggler from './components/theme-toggler';
+import ThemeToggler from './components/themeToggler';
 
-// page.tsx
 export default function Home() {
   return (
     <main className="flex flex-col text-center gap-2 items-center justify-center min-h-screen font-sans">
