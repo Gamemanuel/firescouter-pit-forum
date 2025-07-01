@@ -1,4 +1,3 @@
-    
 export default function DropDown({ question, dataBaseId, optionsArray}) {
     return (
         <div className="

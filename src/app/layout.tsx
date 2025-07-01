@@ -27,8 +27,7 @@ export default function RootLayout({
 }>) {
   return (
     <html 
-      lang="en"
-      suppressHydrationWarning
+      lang="en" suppressHydrationWarning
       className={`
         ${geistSans.variable}
         ${geistMono.variable}
@@ -36,8 +35,33 @@ export default function RootLayout({
         `
       }
     >
+    <head>
+      <script
+      // prevent theme flashing
+        dangerouslySetInnerHTML={{
+          __html: `
+            (function() {
+              try {
+                const storedTheme = localStorage.getItem('theme');
+                const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                const theme = storedTheme ?? (prefersDark ? 'dark' : 'light');
+                if (theme === 'dark') {
+                  document.documentElement.classList.add('dark');
+                  document.documentElement.style.colorScheme = 'dark';
+                } else {
+                  document.documentElement.classList.remove('dark');
+                  document.documentElement.style.colorScheme = 'light';
+                }
+              } catch(e) {}
+            })();
+          `,
+        }}
+      />
+    </head>
       <body 
-        className={inter.className}
+        className={
+          inter.className
+        }
       >
         <Providers>{
           children}
