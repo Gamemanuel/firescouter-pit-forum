@@ -1,14 +1,22 @@
 export default function InputBox({ question, categoryOfQuestion, placeholder, type }) {
   return (
+    <div className='
+      flex
+      flex-wrap
+      -mx-3
+      mb-6
+      '
+    >
     <div className="
       w-full
       px-3
-      mb-6
+      mb-3
       "
     >
       <label
         className="
           block
+          text-left
           uppercase
           tracking-wide
           text-gray-800
@@ -45,5 +53,6 @@ export default function InputBox({ question, categoryOfQuestion, placeholder, ty
         placeholder={placeholder}
       />
     </div>
+    </div>  
   );
 }

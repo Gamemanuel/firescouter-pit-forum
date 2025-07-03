@@ -1,6 +1,32 @@
 @config "../../tailwind.config.js";
 @import "tailwindcss";
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@theme {
+    --color-test:#9A989A;
+    --color-fred:#ED1C24;
+    --color-fblue:#0066B3;
+}
+
+/* theme: {
+    extend: {
+      colors: {
+        DecodeBlue: "#598290",
+        DecodeYellow: "#e5ae32",
+        DecodeRed: "#ea572e",
+        DecodeGreen: "#92dbac",
+        Black: "#000000",
+        GithubBlue: "#001C4D",
+        firstRed: "#ED1C24",
+        firstBlue: "#0066B3",
+        firstGrey: "#9A989A",
+      },
+    },
+  }, */
+/* 
+  @layer theme {
+  * {
+    @variant dark {
+      --color-pink: #8e0d7a;
+    }
+  }
+} */

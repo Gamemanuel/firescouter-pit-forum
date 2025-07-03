@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter, Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Providers from './providers';
+import ThemeToggler from "./components/themeToggler";
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -63,8 +64,22 @@ export default function RootLayout({
           inter.className
         }
       >
-        <Providers>{
-          children}
+        <Providers>
+          <div className="
+          fixed
+          top-4
+          right-4
+          z-50
+          "
+          >
+            <ThemeToggler />
+          </div>
+          <div className="
+            static
+            "
+          >
+            {children}
+          </div>
         </Providers>
       </body>
     </html>
