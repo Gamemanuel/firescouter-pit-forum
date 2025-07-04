@@ -1,7 +1,7 @@
 import InputBox from '../../formComponents/inputBox';
 import DropDown from '../../formComponents/dropDown'
 // upload secrets
-import { firebaseConfig, CLOUDINARY_CLOUD_NAME, CLOUDINARY_UPLOAD_PRESET } from '../../components/secrets';
+// import { firebaseConfig, CLOUDINARY_CLOUD_NAME, CLOUDINARY_UPLOAD_PRESET } from '../../components/secrets';
 
 export default function Home() {
   return (

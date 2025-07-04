@@ -6,7 +6,7 @@
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  basePath: "/2048-in-react",
+  basePath: "/firescouter-pit-fourm",
   output: "export",
   reactStrictMode: true,
 };
