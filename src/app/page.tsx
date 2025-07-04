@@ -19,7 +19,10 @@ export default function Page() {
               py-4
               rounded-lg
               bg-fred
-              space-x-4">
+              space-x-4
+              hover:opacity-85
+              "
+            >
             New Form
           </button>
 
@@ -32,7 +35,10 @@ export default function Page() {
               font-bold
               py-4
               rounded-lg
-              bg-fblue">
+              bg-fblue
+              hover:opacity-85
+              "
+            >
             Main Menu
           </button>
         </div>
