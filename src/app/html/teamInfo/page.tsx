@@ -1,7 +1,7 @@
 import InputBox from '../../formComponents/InputBox';
 import DropDown from '../../formComponents/dropDown'
 // upload secrets
-// import { firebaseConfig, CLOUDINARY_CLOUD_NAME, CLOUDINARY_UPLOAD_PRESET } from '../../components/secrets';
+import { firebaseConfig, CLOUDINARY_CLOUD_NAME, CLOUDINARY_UPLOAD_PRESET } from '../../components/secrets';
 
 export default function Home() {
   return (
@@ -20,6 +20,7 @@ export default function Home() {
         flex
         items-start
         justify-center
+        mt-6
         "
       >
         <form 
@@ -114,7 +115,7 @@ export default function Home() {
             </InputBox>
 
             {/* submit/clear buttons */}
-            <div className="w-full flex space-x-8 items-start justify-center">
+            <div className="w-full flex space-x-8 items-start justify-center mb-6">
                 {/* clear button */}
                     <button type="button" id="clearButton" className="w-60 text-white font-bold py-4 rounded-lg bg-fred hover:opacity-85 space-x-4">
                         Clear
