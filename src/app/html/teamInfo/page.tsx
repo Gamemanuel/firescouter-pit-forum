@@ -1,4 +1,4 @@
-import InputBox from '../../formComponents/inputBox';
+import InputBox from '../../formComponents/InputBox';
 import DropDown from '../../formComponents/dropDown'
 // upload secrets
 // import { firebaseConfig, CLOUDINARY_CLOUD_NAME, CLOUDINARY_UPLOAD_PRESET } from '../../components/secrets';
