@@ -17,6 +17,7 @@
 # accessibility
     [ ] make the readme.md and make it include the setups for .env 
     [ ] make a loading screen
+    [ ] make the drawing pad submit when offline
 
 # security
     [ ] encript .env files https://dotenvx.com/docs/quickstart

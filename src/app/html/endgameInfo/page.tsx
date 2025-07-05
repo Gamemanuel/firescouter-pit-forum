@@ -1,16 +1,15 @@
 'use client'
 
-import InputBox from '../../../components/formComponents/InputBox';
+import InputBox from '@/components/formComponents/InputBox';
 import { useFormSync } from '@/hooks/useFormSync';
 import { syncOfflineData } from '@/utils/syncOffline';
 import DrawingPad, { DrawingPadRef } from '@/components/formComponents/drawingPad';
 import { useRef } from 'react';
 import { uploadToCloudinary } from '@/utils/uploadToCloudinary';
-
 import { useRouter } from 'next/navigation';
 
 export default function TeamInfo() {
-  useFormSync('teamInfo');
+  useFormSync('endgameInfo');
   const drawingPadRef = useRef<DrawingPadRef>(null);
   const router = useRouter(); // Initialize the router
 

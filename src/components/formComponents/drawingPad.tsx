@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useEffect, forwardRef, useImperativeHandle, useState } from 'react';
+import { useRef, useEffect, forwardRef, useImperativeHandle } from 'react';
 
 // Define the interface for the methods this component will expose to its parent
 export interface DrawingPadRef {
@@ -8,10 +8,10 @@ export interface DrawingPadRef {
   clearDrawing: () => void;
 }
 
-// Define the types for the props this component accepts
+// define the inputs
 interface DrawingPadProps {
   id: string; // A unique ID for the canvas element
-  headingText?: string; // Optional custom heading text
+  headingText?: string; // custom heading text
 }
 
 const DrawingPad = forwardRef<DrawingPadRef, DrawingPadProps>(
@@ -149,7 +149,6 @@ const DrawingPad = forwardRef<DrawingPadRef, DrawingPadProps>(
               height={479}
               className="mb-4 appearance-none block w-full leading-tight rounded-lg overflow-hidden"
             />
-            {/* Clear button directly integrated into DrawingPad.tsx */}
             <div className="flex gap-2 mb-2">
               <button
                 type="button"
