@@ -1,3 +1,4 @@
+// src/utils/firebase.ts
 import { initializeApp, getApps, getApp } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore';
 import { firebaseConfig } from '@/secrets';

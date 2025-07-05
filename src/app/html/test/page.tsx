@@ -1,121 +1,155 @@
+// src/components/MultiDrawingPads.tsx
+
 'use client';
 
-import { useState, useRef } from 'react';
-import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
+import { useState, useEffect, useRef } from 'react';
+import DrawingPad, { DrawingPadRef } from '@/components/formComponents/drawingPad'; // Import DrawingPadRef
 import { uploadToCloudinary } from '@/utils/uploadToCloudinary';
-import { syncOfflineData } from '@/utils/syncOffline';
-import DrawingPad, { DrawingPadHandle } from '@/components/formComponents/canvas';
 import { db } from '@/utils/firebase';
+import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 
-export default function Padge() {
-  const [canvasIds, setCanvasIds] = useState<number[]>([]);
-  const canvasRefs = useRef<DrawingPadHandle[]>([]);
 
-  const addCanvas = () => {
-    setCanvasIds((prev) => [...prev, prev.length]);
+export default function MultiDrawingPads() {
+  const [numberOfPads, setNumberOfPads] = useState<number>(0);
+  const [customHeadings, setCustomHeadings] = useState<string[]>([]);
+  const drawingPadRefs = useRef<(DrawingPadRef | null)[]>([]);
+
+  const handleNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const inputValue = e.target.value;
+    let value = parseInt(inputValue, 10);
+
+    if (isNaN(value) || value < 0) {
+      value = 0;
+    }
+
+    setNumberOfPads(value);
+    setCustomHeadings(Array(value).fill('').map((_, i) => customHeadings[i] || `Drawing Pad #${i + 1}`));
+    drawingPadRefs.current = Array(value).fill(null);
   };
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (!window.confirm('Submit this scouting info?')) return;
+  const handleHeadingChange = (index: number, newText: string) => {
+    setCustomHeadings(prev => {
+      const updatedHeadings = [...prev];
+      updatedHeadings[index] = newText;
+      return updatedHeadings;
+    });
+  };
 
-    const formData = new FormData(e.currentTarget);
-    const data: Record<string, string> = {};
-    formData.forEach((val, key) => (data[key] = val.toString()));
-    data.createdAt = new Date().toISOString();
-
-    // 🖼 Upload each canvas image
-    const uploadedImages = [];
-    for (const ref of canvasRefs.current) {
-      const imageData = ref?.getImageData();
-      if (imageData && imageData !== 'data:,') {
-        try {
-          const result = await uploadToCloudinary(
-            imageData
-          );
-          uploadedImages.push({
-            imageUrl: result.secure_url,
-            cloudinaryPublicId: result.public_id,
-            timestamp: serverTimestamp(),
-          });
-        } catch (err) {
-          console.error('Image upload failed:', err);
-        }
+  useEffect(() => {
+    drawingPadRefs.current.length = numberOfPads;
+    for (let i = 0; i < numberOfPads; i++) {
+      if (!drawingPadRefs.current[i]) {
+        drawingPadRefs.current[i] = null;
       }
     }
+  }, [numberOfPads]);
 
-    // ✅ Save image data to Firestore (if any)
-    for (const img of uploadedImages) {
-      await addDoc(collection(db, 'robotDrawings'), img);
+
+  const handleSubmitAllDrawings = async () => {
+    if (numberOfPads === 0) {
+      alert('Please add at least one drawing pad before submitting.');
+      return;
     }
 
-    // 💾 Buffer form data offline
-    const buf = JSON.parse(localStorage.getItem('unsyncedForms') || '[]');
-    buf.push(data);
-    localStorage.setItem('unsyncedForms', JSON.stringify(buf));
+    if (confirm('Are you sure you want to submit all drawings?')) {
+      let combinedEntry = '';
+      const uploadedImageUrls: { heading: string; url: string }[] = [];
 
-    // Sync to Firestore if online
-    if (navigator.onLine) {
-      await syncOfflineData('endgameInfo');
-    } else {
-      alert('Offline—your submission will sync later.');
+      for (let i = 0; i < numberOfPads; i++) {
+        const padRef = drawingPadRefs.current[i];
+        const heading = customHeadings[i] || `Drawing Pad #${i + 1}`;
+
+        if (padRef && typeof padRef.getDrawingData === 'function') {
+          try {
+            const { blob } = await padRef.getDrawingData();
+            if (blob) {
+              const cloudinaryResponse = await uploadToCloudinary(blob);
+              uploadedImageUrls.push({ heading, url: cloudinaryResponse.secure_url });
+            } else {
+              console.warn(`No drawing data found for "${heading}". Skipping upload for this pad.`);
+            }
+          } catch (error: any) {
+            console.error(`Failed to upload drawing "${heading}":`, error);
+            alert(`Failed to upload drawing "${heading}": ${error.message}. Stopping submission.`);
+            return;
+          }
+        } else {
+             console.warn(`Ref for drawing pad #${i+1} (${heading}) is null or getDrawingData is missing.`);
+        }
+      }
+
+      uploadedImageUrls.forEach(item => {
+        combinedEntry += `${item.heading}\n${item.url}\n\n`;
+      });
+
+      if (combinedEntry.endsWith('\n\n')) {
+        combinedEntry = combinedEntry.slice(0, -2);
+      }
+
+      try {
+        await addDoc(collection(db, 'all_drawings_submissions'), {
+          combinedDrawingData: combinedEntry,
+          submittedAt: serverTimestamp(),
+        });
+        alert('All drawings uploaded and combined entry saved to Firebase successfully!');
+        setNumberOfPads(0);
+        setCustomHeadings([]);
+      } catch (error: any) {
+        console.error('Failed to save combined entry to Firebase:', error);
+        alert('Failed to save combined drawing entry to Firebase: ' + error.message);
+      }
     }
-
-    const form = e.currentTarget as HTMLFormElement | null;
-    form?.reset();
-
   };
 
+
   return (
-    <div className="max-w-3xl mx-auto px-4 py-8">
-      <h1 className="text-2xl font-bold mb-6 text-center">🛠️ Scouting Submission</h1>
-
-      <form onSubmit={handleSubmit} className="space-y-6">
-        {/* Text Inputs */}
+    <div className="container mx-auto p-4">
+      <div className="mb-6">
+        <label htmlFor="numPads" className="block text-sm font-medium text-gray-700 dark:text-gray-200">
+          Number of Drawing Pads:
+        </label>
         <input
-          type="text"
-          name="teamNumber"
-          placeholder="Team Number"
-          required
-          className="w-full px-4 py-2 border rounded"
+          type="number"
+          id="numPads"
+          value={numberOfPads}
+          onChange={handleNumberChange}
+          min="0"
+          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm dark:bg-gray-800 dark:border-gray-700 dark:text-white"
         />
-        <textarea
-          name="notes"
-          placeholder="Endgame Notes"
-          className="w-full px-4 py-2 border rounded"
-        />
+      </div>
 
-        {/* Dynamic Canvas Section */}
-        <div className="space-y-6">
-          {canvasIds.map((id, index) => (
-            <div key={id}>
-              <label className="block font-medium mb-2">
-                Canvas #{index + 1}
-              </label>
-              <DrawingPad
-                ref={(el) => {
-                  if (el) canvasRefs.current[index] = el;
-                }}
-              />
-            </div>
-          ))}
-          <button
-            type="button"
-            onClick={addCanvas}
-            className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
-          >
-            ➕ Add Drawing Canvas
-          </button>
-        </div>
-
-        {/* Submit Button */}
+      {numberOfPads > 0 && (
         <button
-          type="submit"
-          className="w-full bg-purple-600 text-white font-bold py-3 rounded hover:bg-purple-700"
+          onClick={handleSubmitAllDrawings}
+          className="w-full text-white font-bold py-4 rounded-lg bg-gradient-to-r from-green-700 to-green-500 hover:opacity-85 space-x-4 mb-6"
         >
-          Submit Form & All Canvases
+          Submit All Drawings
         </button>
-      </form>
+      )}
+
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {Array.from({ length: numberOfPads }).map((_, index) => (
+          <div key={index} className="border border-gray-300 dark:border-gray-700 p-4 rounded-lg shadow-md">
+            <div className="mb-2">
+                <label htmlFor={`heading-${index}`} className="block text-xs font-medium text-gray-600 dark:text-gray-300">
+                    Custom Heading:
+                </label>
+                <input
+                    type="text"
+                    id={`heading-${index}`}
+                    value={customHeadings[index] || `Drawing Pad #${index + 1}`}
+                    onChange={(e) => handleHeadingChange(index, e.target.value)}
+                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm text-sm dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                />
+            </div>
+            <DrawingPad
+              ref={el => (drawingPadRefs.current[index] = el)}
+              id={`drawing-pad-${index}`}
+              headingText={customHeadings[index] || `Drawing Pad #${index + 1}`}
+            />
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
