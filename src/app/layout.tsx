@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Inter, Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Providers from './providers';
-import ThemeToggler from "./components/themeToggler";
+import ThemeToggler from "../components/themeToggler";
 
 const inter = Inter({ subsets: ['latin'] });
 

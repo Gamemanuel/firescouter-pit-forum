@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="FIRST_AGE-FTC-logos2">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/public/img/firstLogos/FIRST_AGE-FTC-logos.zip!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

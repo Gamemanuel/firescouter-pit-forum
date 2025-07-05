@@ -1,43 +1,35 @@
 'use client'
 
-import InputBox from '@/components/formComponents/InputBox';
-import DropDown from '@/components/formComponents/dropDown';
+import InputBox from '../../../components/formComponents/InputBox';
 import { useFormSync } from '@/hooks/useFormSync';
 import { syncOfflineData } from '@/utils/syncOffline';
+import DrawingPad from '@/components/formComponents/canvas';
+
 
 export default function TeamInfo() {
-
-  // import the settings from the submission module useFormSync.ts
-  // the collection name in firebase is "teamInfo"
   useFormSync('teamInfo');
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    // stop default submission type
-    e.preventDefault();
+  e.preventDefault();
+  if (!window.confirm('Submit this team info?')) return;
 
-    // make sure that you want to submit the fourm
-    if (!window.confirm('Submit this team info?')) return;
+  const formData = new FormData(e.currentTarget);
+  const data: Record<string, string> = {};
+  formData.forEach((v, k) => (data[k] = v.toString()));
+  data.createdAt = new Date().toISOString();
 
-    // collect the fourm data
-    const formData = new FormData(e.currentTarget);
-    const data: Record<string, string> = {};
-    formData.forEach((v, k) => (data[k] = v.toString()));
-    data.createdAt = new Date().toISOString();
+  const buf = JSON.parse(localStorage.getItem("unsyncedForms") || "[]");
+  buf.push(data);
+  localStorage.setItem("unsyncedForms", JSON.stringify(buf));
 
-    // sync unsyned fourms (check if there is any forms that are not submitted and submit them)
-    const buf = JSON.parse(localStorage.getItem("unsyncedForms") || "[]");
-    buf.push(data);
-    localStorage.setItem("unsyncedForms", JSON.stringify(buf));
+  if (navigator.onLine) await syncOfflineData('teamInfo');
+  else alert('Offline. Your info will sync when back online.');
 
-    // if offline, queue the info localy and wait for connection
-    if (navigator.onLine) await syncOfflineData('teamInfo');
+  const form = document.getElementById("teamInfoForm") as HTMLFormElement;
+  form?.reset();
+};
 
-    // reset the fourm
-    const form = document.getElementById("teamInfoForm") as HTMLFormElement;
-    form?.reset();
-  };
-  // html content
-  return (
+return (
     <main className="
       flex
       flex-col
@@ -77,7 +69,7 @@ export default function TeamInfo() {
             justify-center
             "
           >
-            Team Information
+            Endgame Information
           </h1>
             <InputBox
                 question="Team Name"
@@ -95,30 +87,27 @@ export default function TeamInfo() {
             >
             </InputBox>
 
-            <DropDown
-                question="Drivetrain Type"
-                dataBaseId="drivetrain"
-                optionsArray={["Mechanum", "6 wheel", "Tank", "omni", "4-wheel"]}
-            ></DropDown>
+            {/* where can you hang in endgame? */}
+            <DrawingPad />
 
             <InputBox
-                question="Number of drivers"
-                categoryOfQuestion="numDrivers"
-                placeholder="2"
-                type="number"
-            >
-            </InputBox>
-
-            <InputBox
-                question="Tool Type"
-                categoryOfQuestion="tool"
-                placeholder="Arm w/ Claw"
+                question="Cycle time for level 2"
+                categoryOfQuestion="level2"
+                placeholder="2 minuets 30 sec"
                 type="text"
             >
             </InputBox>
 
             <InputBox
-                question="How did you preform at the last competition?"
+                question="Tool Cycle time for level 3"
+                categoryOfQuestion="level3"
+                placeholder="15 seconds"
+                type="text"
+            >
+            </InputBox>
+
+            <InputBox
+                question="How did you preform at the last competition in Endgame?"
                 categoryOfQuestion="preformance"
                 placeholder="Robot go BURRRRR!"
                 type="text"
@@ -126,24 +115,24 @@ export default function TeamInfo() {
             </InputBox>
 
             <InputBox
-                question="Weight of the Robot (pounds)"
-                categoryOfQuestion="weight"
-                placeholder="142"
-                type="number"
+                question="Hang Accuracy"
+                categoryOfQuestion="accuracy"
+                placeholder="Good"
+                type="text"
             ></InputBox>
 
             <InputBox
-                question="How fast does you robot get to speed and what is your top speed"
-                categoryOfQuestion="speed"
+                question="Problems with Endgame"
+                categoryOfQuestion="failures"
                 placeholder="speed I am speed"
                 type="text"
             >
             </InputBox>
 
             <InputBox
-                question="Notes on Robot"
+                question="Notes on Endgame"
                 categoryOfQuestion="notes"
-                placeholder="Robot is awsome"
+                placeholder="if you have no problems you did not try"
                 type="text"
             >
             </InputBox>
