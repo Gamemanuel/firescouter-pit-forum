@@ -10,9 +10,9 @@ import { useRouter } from 'next/navigation';
 
 export default function TeamInfo() {
   // Create a unique ref for each DrawingPad
-  const samplesDrawingPadRef = useRef<DrawingPadRef>(null);
-  const netZoneDrawingPadRef = useRef<DrawingPadRef>(null);
-  const teamHangDrawingPadRef = useRef<DrawingPadRef>(null);
+  const samplesDrawingPadRef = useRef<DrawingPadRef>(null) as React.RefObject<DrawingPadRef>;
+  const netZoneDrawingPadRef = useRef<DrawingPadRef>(null) as React.RefObject<DrawingPadRef>;
+  const teamHangDrawingPadRef = useRef<DrawingPadRef>(null) as React.RefObject<DrawingPadRef>;
 
   const router = useRouter(); // Initialize the router
 
