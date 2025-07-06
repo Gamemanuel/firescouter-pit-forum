@@ -12,7 +12,6 @@ export default function TeamInfo() {
   // the collection name in firebase is "teamInfo"
   useFormSync('teamInfo');
   const router = useRouter(); // Initialize the router
-  console.log('Firebase project ID:', process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     // stop default submission type
