@@ -53,7 +53,7 @@ export default function TeamInfo() {
 
     if (navigator.onLine) {
       try {
-        await syncOfflineData('teamInfo');
+        await syncOfflineData('endgameInfo');
       } catch (syncError) {
         console.error("Error during online sync:", syncError);
         alert("Online sync failed. Your info is saved offline and will sync later");

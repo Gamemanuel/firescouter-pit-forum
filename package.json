@@ -21,6 +21,7 @@
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-router-dom": "^7.6.3",
+    "roughjs": "^4.6.6",
     "supercons": "^0.1.7"
   },
   "devDependencies": {

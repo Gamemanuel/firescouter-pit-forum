@@ -4,17 +4,19 @@ import InputBox from '@/components/formComponents/InputBox';
 import DropDown from '@/components/formComponents/dropDown';
 import { useFormSync } from '@/hooks/useFormSync';
 import { syncOfflineData } from '@/utils/syncOffline';
+import { useRouter } from 'next/navigation';
 
 export default function TeamInfo() {
 
   // import the settings from the submission module useFormSync.ts
   // the collection name in firebase is "teamInfo"
   useFormSync('teamInfo');
+  const router = useRouter(); // Initialize the router
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     // stop default submission type
     e.preventDefault();
-
+    
     // make sure that you want to submit the fourm
     if (!window.confirm('Submit this team info?')) return;
 
@@ -35,6 +37,8 @@ export default function TeamInfo() {
     // reset the fourm
     const form = document.getElementById("teamInfoForm") as HTMLFormElement;
     form?.reset();
+
+    router.push('/html/autoInfo');
   };
   // html content
   return (

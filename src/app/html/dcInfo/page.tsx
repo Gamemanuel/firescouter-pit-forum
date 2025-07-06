@@ -9,8 +9,11 @@ import { uploadToCloudinary } from '@/utils/uploadToCloudinary';
 import { useRouter } from 'next/navigation';
 
 export default function TeamInfo() {
-  useFormSync('endgameInfo');
-  const drawingPadRef = useRef<DrawingPadRef>(null);
+  // Create a unique ref for each DrawingPad
+  const samplesDrawingPadRef = useRef<DrawingPadRef>(null);
+  const netZoneDrawingPadRef = useRef<DrawingPadRef>(null);
+  const teamHangDrawingPadRef = useRef<DrawingPadRef>(null);
+
   const router = useRouter(); // Initialize the router
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -22,28 +25,38 @@ export default function TeamInfo() {
     formData.forEach((v, k) => (data[k] = v.toString()));
     data.createdAt = new Date().toISOString();
 
-    let drawingUrl: string | null = null;
-    if (drawingPadRef.current) {
-      try {
-        const { blob } = await drawingPadRef.current.getDrawingData();
-        if (blob) {
-          const cloudinaryResponse = await uploadToCloudinary(blob);
-          drawingUrl = cloudinaryResponse.secure_url;
-          console.log("Drawing uploaded to Cloudinary:", drawingUrl);
-        } else {
-          console.warn("No drawing data found from DrawingPad.");
+    // Function to handle drawing upload for a specific ref and data key
+    const uploadDrawingAndSetData = async (
+      ref: React.RefObject<DrawingPadRef>,
+      dataKey: string
+    ) => {
+      let drawingUrl: string | null = null;
+      if (ref.current) {
+        try {
+          const { blob } = await ref.current.getDrawingData();
+          if (blob) {
+            const cloudinaryResponse = await uploadToCloudinary(blob);
+            drawingUrl = cloudinaryResponse.secure_url;
+            console.log(`Drawing for ${dataKey} uploaded to Cloudinary:`, drawingUrl);
+          } else {
+            console.warn(`No drawing data found for ${dataKey}.`);
+          }
+        } catch (error: any) {
+          console.error(`Failed to upload drawing for ${dataKey}:`, error);
+          alert(`Failed to upload drawing for ${dataKey}: ` + error.message);
+          throw error; // Re-throw to stop submission if an upload fails
         }
-      } catch (error: any) {
-        console.error("Failed to upload drawing:", error);
-        alert("Failed to upload drawing: " + error.message);
-        return; // Stop submission if drawing upload fails
       }
-    }
+      data[dataKey] = drawingUrl || 'no_drawing_submitted';
+    };
 
-    if (drawingUrl) {
-      data.teamHangDrawingUrl = drawingUrl;
-    } else {
-      data.teamHangDrawingUrl = 'no_drawing_submitted';
+    try {
+      // Upload each drawing individually
+      await uploadDrawingAndSetData(samplesDrawingPadRef, 'samplesDrawingUrl');
+      await uploadDrawingAndSetData(netZoneDrawingPadRef, 'netZoneDrawingUrl');
+      await uploadDrawingAndSetData(teamHangDrawingPadRef, 'teamHangDrawingUrl');
+    } catch (error) {
+      return; // Stop submission if any drawing upload failed
     }
 
     // local storage and offline sync
@@ -53,7 +66,7 @@ export default function TeamInfo() {
 
     if (navigator.onLine) {
       try {
-        await syncOfflineData('teamInfo');
+        await syncOfflineData('dcInfo');
       } catch (syncError) {
         console.error("Error during online sync:", syncError);
         alert("Online sync failed. Your info is saved offline and will sync later");
@@ -65,12 +78,19 @@ export default function TeamInfo() {
     // reset form
     const form = document.getElementById("teamInfoForm") as HTMLFormElement;
     form?.reset();
-    if (drawingPadRef.current) {
-        drawingPadRef.current.clearDrawing();
+    // Clear each drawing pad
+    if (samplesDrawingPadRef.current) {
+      samplesDrawingPadRef.current.clearDrawing();
+    }
+    if (netZoneDrawingPadRef.current) {
+      netZoneDrawingPadRef.current.clearDrawing();
+    }
+    if (teamHangDrawingPadRef.current) {
+      teamHangDrawingPadRef.current.clearDrawing();
     }
 
     // redirect
-    router.push('/html/endgame');
+    router.push('/html/endgameInfo');
   };
 
   return (
@@ -136,7 +156,7 @@ export default function TeamInfo() {
                 type="text"
             />
 
-            <DrawingPad ref={drawingPadRef} id="samples-draw" headingText="how do you score samples (primary method)" />
+            <DrawingPad ref={samplesDrawingPadRef} id="samples-draw" headingText="how do you score samples (primary method)" />
 
             <InputBox
                 question="cycle time for Net Zone"
@@ -145,7 +165,7 @@ export default function TeamInfo() {
                 type="text"
             />
 
-            <DrawingPad ref={drawingPadRef} id="net-zone-draw" headingText="how do you score in the net zone (primary method)" />
+            <DrawingPad ref={netZoneDrawingPadRef} id="net-zone-draw" headingText="how do you score in the net zone (primary method)" />
 
             <InputBox
                 question="Cyle time for Specimen and primary bar"
@@ -154,7 +174,7 @@ export default function TeamInfo() {
                 type="text"
             />
 
-            <DrawingPad ref={drawingPadRef} id="team-hang-drawing-pad" headingText="how do you score on the submersible (primary)" />
+            <DrawingPad ref={teamHangDrawingPadRef} id="team-hang-drawing-pad" headingText="how do you score on the submersible (primary)" />
 
             <InputBox
                 question="Issues in Driver Controll"
@@ -176,14 +196,14 @@ export default function TeamInfo() {
                 placeholder="if you have no problems you did not try"
                 type="text"
             />
-            
+
             <InputBox
                 question="Struggles"
                 categoryOfQuestion="struggles"
                 placeholder="keep moving forward"
                 type="text"
             />
-            
+
             <InputBox
                 question="Notes on Driver controll"
                 categoryOfQuestion="notes"
@@ -194,7 +214,10 @@ export default function TeamInfo() {
             <div className="w-full flex space-x-8 items-start justify-center mb-6">
                 <button type="button" onClick={() => {
                     (document.getElementById("teamInfoForm") as HTMLFormElement)?.reset();
-                    if (drawingPadRef.current) drawingPadRef.current.clearDrawing();
+                    // Clear all drawing pads
+                    if (samplesDrawingPadRef.current) samplesDrawingPadRef.current.clearDrawing();
+                    if (netZoneDrawingPadRef.current) netZoneDrawingPadRef.current.clearDrawing();
+                    if (teamHangDrawingPadRef.current) teamHangDrawingPadRef.current.clearDrawing();
                     alert('Form cleared!');
                 }} className="w-60 text-white font-bold py-4 rounded-lg bg-fred hover:opacity-85 space-x-4">
                     Clear
