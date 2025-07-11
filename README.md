@@ -1,6 +1,6 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Welcome to firescouter-pit-form
 
-## Getting Started
+## Setup
 
 First, run the development server:
 
@@ -14,23 +14,33 @@ pnpm dev
 bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+[//]: # (Open [http://localhost:3000]&#40;http://localhost:3000&#41; with your browser to see the result.)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## setup .env.local file
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Here is a example .env.local file
 
-## Learn More
+```env
+# Firebase Config
+NEXT_PUBLIC_FIREBASE_API_KEY=key
+NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=key
+NEXT_PUBLIC_FIREBASE_PROJECT_ID=key
+NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=key
+NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=key
+NEXT_PUBLIC_FIREBASE_APP_ID=key
+NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID=key
 
-To learn more about Next.js, take a look at the following resources:
+# Cloudinary
+NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME=key
+NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET=key
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+The key names should be used exactly but the keys should match your credentials when you sign up for the corresponding programs: cloudinary and firebase.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+once you are done you should name this file env.local and place it in the root directory
 
-## Deploy on Vercel
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### DONE!
+note that this is just the pit form portion meant to be used during pre game. watch for the other parts coming by the end of the summer!
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Note also that this is made for the FTC season 2024-2025 not 2025-2026 but once the game releases i will update it. please refer to the releases page
