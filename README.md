@@ -14,8 +14,6 @@ pnpm dev
 bun dev
 ```
 
-[//]: # (Open [http://localhost:3000]&#40;http://localhost:3000&#41; with your browser to see the result.)
-
 ## setup .env.local file
 
 Here is a example .env.local file
