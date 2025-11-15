@@ -26,7 +26,7 @@ const DrawingPad = forwardRef<DrawingPadRef, DrawingPadProps>(
       const ctx = canvas?.getContext('2d');
       if (canvas && ctx) {
         const img = new Image();
-        img.src = '/img/field/field-2024-juice-dark.png';
+        img.src = '/img/field/feild.webp';
 
         img.onload = () => {
           // Clear before drawing new image to prevent stacking
