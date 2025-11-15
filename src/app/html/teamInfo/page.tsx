@@ -152,6 +152,31 @@ export default function TeamInfo() {
             >
             </InputBox>
 
+
+            <InputBox
+                question="Is the Robot a Kit Bot?"
+                categoryOfQuestion="kitBot"
+                placeholder="No"
+                type="text"
+            >
+            </InputBox>
+
+            <InputBox
+                question="How many artifacts can you hold"
+                categoryOfQuestion="artifactCount"
+                placeholder="20"
+                type="number"
+            >
+            </InputBox>
+
+            <InputBox
+                question="How do you plan on scoring"
+                categoryOfQuestion="scorePlan"
+                placeholder="yeah"
+                type="text"
+            >
+            </InputBox>
+
             {/* submit/clear buttons */}
             <div className="w-full flex space-x-8 items-start justify-center mb-6">
                 {/* clear button */}
