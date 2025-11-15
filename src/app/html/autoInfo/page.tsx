@@ -209,52 +209,46 @@ export default function AutoInfo() {
             Auto Information
           </h1>
           <InputBox
-            question="Team Name"
-            categoryOfQuestion="teamName"
-            placeholder="Dragons"
+            question="What-is-your-average-auto-speed?"
+            categoryOfQuestion="auto-speed"
+            placeholder="faster-than-you-can-say-jibber-wabber"
             type="text"
           />
 
           <InputBox
-            question="Team Number"
-            categoryOfQuestion="teamNumber"
-            placeholder="10523"
+            question="What-is-your-auto-accuracy"
+            categoryOfQuestion="auto-accuracy"
+            placeholder="we-have-our-accuracy-within-a-half-mile"
             type="text"
           />
 
           <DropDown
-            question="What is your preferred scoring method?"
-            dataBaseId="scoringType"
-            optionsArray={["push bot", "Specimen", "Samples", "ether, we are good at both"]}
+            question="does-your-auot-experience-any-problems?"
+            dataBaseId="failure-type"
+            optionsArray={["It-hasn't-caught-fire-since-yesterday"]}
           />
 
           <InputBox
-            question="Notes on Scoring style"
-            categoryOfQuestion="notesOnScoring"
-            placeholder="Scoring Notes"
+            question="What-is-your-artifact-cycle-time?"
+            categoryOfQuestion="artifact-cycle"
+            placeholder="10-seconds"
             type="text"
           />
 
           <InputBox
-            question="Cycle time for samples in Driver Control"
-            categoryOfQuestion="samplesCycleTime"
+            question="What-is-your-depot-cycle-time?"
+            categoryOfQuestion="depotCycleTime"
             placeholder="15 seconds"
             type="text"
           />
 
           <InputBox
-            question="Cycle time for specimen in Driver Control"
-            categoryOfQuestion="specimenCycleTime"
-            placeholder="15 seconds"
+            question="any-notes-on-your-auto?"
+            categoryOfQuestion="auto-notes-important"
+            placeholder="Our-robot-has-this-weird-quirk..."
             type="text"
           />
 
-          <InputBox
-            question="How did you perform at the last competition in Auto?"
-            categoryOfQuestion="performanceLastCompAuto"
-            placeholder="Robot go BURRRRR!"
-            type="text"
-          />
 
           <div className='flex flex-wrap -mx-3 mb-6'>
             <div className="w-full px-3 mb-3">

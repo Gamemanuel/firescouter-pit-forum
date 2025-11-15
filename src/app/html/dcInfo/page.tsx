@@ -150,22 +150,22 @@ export default function TeamInfo() {
             />
 
             <InputBox
-                question="Cyle time for samples and primary level"
-                categoryOfQuestion="samples"
-                placeholder="Sample Cycle time"
+                question="What’s your cycle time for depot"
+                categoryOfQuestion="depotCycleTime"
+                placeholder="depot Cycle time"
                 type="text"
             />
 
-            <DrawingPad ref={samplesDrawingPadRef} id="samples-draw" headingText="how do you score samples (primary method)" />
+            <DrawingPad ref={samplesDrawingPadRef} id="samples-draw" headingText="how do you score depot (primary method)" />
 
             <InputBox
-                question="cycle time for Net Zone"
-                categoryOfQuestion="Specimen"
-                placeholder="Specimen cycle time"
+                question="What’s your cycle time for artifacts"
+                categoryOfQuestion="artifactsCycleTime"
+                placeholder="artifacts cycle time"
                 type="text"
             />
 
-            <DrawingPad ref={netZoneDrawingPadRef} id="net-zone-draw" headingText="how do you score in the net zone (primary method)" />
+            <DrawingPad ref={netZoneDrawingPadRef} id="net-zone-draw" headingText="how do you artifacts (primary method)" />
 
             <InputBox
                 question="Cyle time for Specimen and primary bar"
@@ -174,7 +174,7 @@ export default function TeamInfo() {
                 type="text"
             />
 
-            <DrawingPad ref={teamHangDrawingPadRef} id="team-hang-drawing-pad" headingText="how do you score on the submersible (primary)" />
+            <DrawingPad ref={teamHangDrawingPadRef} id="team-hang-drawing-pad" headingText="What’s your preferred route" />
 
             <InputBox
                 question="Issues in Driver Controll"
@@ -210,6 +210,21 @@ export default function TeamInfo() {
                 placeholder="if you have no problems you did not try"
                 type="text"
             />
+
+            <InputBox
+                question="Where can you shoot from"
+                categoryOfQuestion="shootWhere"
+                placeholder="1st launch zone, 2nd launch zone"
+                type="text"
+            />
+
+            <InputBox
+                question="What’s your preferred scoring method"
+                categoryOfQuestion="scoreHow"
+                placeholder="artifacts"
+                type="text"
+            />
+
 
             <div className="w-full flex space-x-8 items-start justify-center mb-6">
                 <button type="button" onClick={() => {

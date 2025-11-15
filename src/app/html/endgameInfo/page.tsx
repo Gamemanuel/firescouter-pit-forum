@@ -129,47 +129,47 @@ export default function TeamInfo() {
                 type="text"
             />
 
-            <DrawingPad ref={drawingPadRef} id="team-hang-drawing-pad" headingText="Where can you hang in endgame?" />
+            <DrawingPad ref={drawingPadRef} id="team-park-drawing-pad" headingText="How-do-you-plan-to-park?" />
 
             <InputBox
-                question="Cycle time for level 2"
-                categoryOfQuestion="level2"
-                placeholder="2 minuets 30 sec"
+                question="Are-you-going-for-patterns"
+                categoryOfQuestion="patterns"
+                placeholder="Patterns-are-the-worst"
                 type="text"
             />
 
             <InputBox
-                question="Tool Cycle time for level 3"
-                categoryOfQuestion="level3"
-                placeholder="15 seconds"
+                question="Do-you-plan-on-parking-or-scoring-artifacts-during-end-game?"
+                categoryOfQuestion="end-game"
+                placeholder="We-plan-on..."
                 type="text"
             />
 
             <InputBox
-                question="How did you preform at the last competition in Endgame?"
+                question="How-did-you-preform-at-the-last-competition-in-Endgame?"
                 categoryOfQuestion="preformance"
-                placeholder="Robot go BURRRRR!"
+                placeholder="Robot-go-BURRRRR!"
                 type="text"
             />
 
             <InputBox
-                question="Hang Accuracy"
-                categoryOfQuestion="accuracy"
-                placeholder="Good"
+                question="Parking-accurcay"
+                categoryOfQuestion="parking"
+                placeholder="High-Medium-Low"
                 type="text"
             />
 
             <InputBox
-                question="Problems with Endgame"
+                question="Problems-with-Endgame"
                 categoryOfQuestion="failures"
-                placeholder="speed I am speed"
+                placeholder="problmes?-what-probl..."
                 type="text"
             />
 
             <InputBox
-                question="Notes on Endgame"
+                question="Notes-on-Endgame"
                 categoryOfQuestion="notes"
-                placeholder="if you have no problems you did not try"
+                placeholder="I-aimed-to-high-had-to-much-greed-I-reached-for-things-I-didn't-need"
                 type="text"
             />
 
