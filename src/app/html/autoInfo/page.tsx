@@ -316,7 +316,7 @@ export default function AutoInfo() {
 
                 <CheckBox
                   question={`Scoring Types Used for Auto ${index + 1}`}
-                  options={["Specimen Score", "Sample Score", "Push Bot", "No Scoring", "Other"]}
+                  options={["artifact Score", "depote Score", "Push Bot", "No Scoring", "Other"]}
                   categoryOfQuestion={`scoringTypesAuto-${index}`}
                 />
 
